@@ -1,0 +1,143 @@
+#include "minishell.h"
+
+void insert(t_elem **head,char data,int index)
+{
+    t_elem *newelem;
+    t_elem *current;
+    int count;
+    
+    count = 1;
+    newelem = malloc(sizeof(t_elem));
+    newelem->data = data;
+    newelem->prev = NULL;
+    newelem->next = NULL;
+    if(*head == NULL)
+    {    
+        *head = newelem;
+        return;
+    }
+    current = *head;
+    while(count < index && current->next != NULL)
+    {
+        current = current->next;
+        count++;
+    }
+    if(count < index)
+    {
+        printf("insert invalide\n");
+        return;
+    }
+    newelem->next = current;
+    newelem->prev = current ->prev;
+    current->prev = newelem;
+    if(newelem->prev != NULL)
+        newelem->prev->next = newelem;
+    else
+        *head = newelem;
+}
+int search_and_find(t_elem *head, char target1,char target2,char target3)
+{
+    t_elem *current;
+    t_elem *temp;
+
+    current = head;
+    temp = NULL;
+    while(current != NULL)
+    {
+        if(current->data == target1)
+        {
+            temp = current->next;
+            while(temp != NULL)
+            {
+                if(temp->data == target2)
+                    return(1);
+                if(temp->data == target3)
+                    return(0);
+                temp = temp->next;
+            }
+        }
+        current = current->next;
+    }
+    return(0);
+}
+int compare_after_character(t_elem *head,char target,const char *str)
+{
+    t_elem *current;
+    int length;
+    int i;
+
+    current = head;
+    length = ft_strlen(str);
+    i = 0;
+    while(current != NULL && current->data != target)
+        current = current->next;
+    if(current != NULL && current->data == target)
+    {   
+        current = current->next;
+        while(current != NULL && i < length && current->data == str[i])
+        {
+            current = current->next;
+            i++;
+        }  
+        if(i == length)
+            if((current != NULL) && (current->data == '\'' || current->data == '\"'))
+                return(1);
+            if(current == NULL)
+                return(1);
+    }
+    return(0);
+}
+void remove_segment(t_elem **head,char target,int length)
+{
+    t_elem *current;
+    t_elem *startelem;
+    t_elem *endelem;
+    t_elem *temp;
+    int i;
+
+    current = *head;
+    while(current != NULL && current->data != target)
+        current = current->next;
+    if(current != NULL)
+    {
+        startelem = current;
+        endelem = current;
+        i = 0;
+        while(endelem != NULL && i <= length)
+        {
+            endelem = endelem->next;
+            i++;
+        }
+        if(startelem->prev != NULL)
+            startelem->prev->next = endelem;
+        else
+            *head = endelem;
+        if(endelem != NULL)
+            endelem->prev = startelem->prev;
+        while(startelem != endelem)
+        {
+            temp = startelem;
+            startelem = startelem->next;
+            free(temp);
+        }
+    }
+}
+int compare_var_env(t_mini *shell,t_elem *lst)
+{
+	int i;
+	
+	i = 0;
+	while(shell->env[i])
+	{
+		shell->command = ft_split(shell->env[i],'=');
+		shell->length_command = ft_strlen(shell->command[0]);
+		if(compare_after_character(lst,'$',shell->command[0]) == 1)
+			return(1);
+		else
+		{	
+			free(shell->command);
+			i++;
+		}
+	}
+	return(0);
+}
