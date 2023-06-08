@@ -6,7 +6,7 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 17:09:10 by acaplat           #+#    #+#             */
-/*   Updated: 2023/06/06 17:02:57 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/06/08 21:46:22 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ t_elem *get_my_list(t_mini *shell)
 
 	lst = NULL;
 	i = 0;
-	while(shell->line[i])
+	while(shell->add_char[i])
 	{
-		add_element(&lst,shell->line[i]);
+		add_element(&lst,shell->add_char[i]);
 		i++;
 	}
 	return(lst);

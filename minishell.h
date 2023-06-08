@@ -6,7 +6,7 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 12:08:58 by acaplat           #+#    #+#             */
-/*   Updated: 2023/06/08 17:43:53 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/06/08 22:05:17 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,14 @@ typedef struct s_elem
 	struct s_elem	*next;
 	struct s_elem	*prev;
 }					t_elem;
+
+typedef struct s_compteur
+{
+	int				i;
+	int				j;
+	int				length;
+}					t_compteur;
+
 // Main
 
 void				minishell_loop(t_mini *shell);
