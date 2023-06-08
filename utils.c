@@ -6,7 +6,7 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 15:48:36 by acaplat           #+#    #+#             */
-/*   Updated: 2023/06/06 14:47:57 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/06/07 18:38:29 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void initialize(char **env,t_mini *shell)
 	shell->line = NULL;
 	shell->newline = NULL;
 	shell->add_char = ft_calloc(1,1);
+	shell->flag = 0;
 	shell->command = NULL;
 	shell->length_command = 0;
 	shell->tab = NULL;
@@ -39,4 +40,20 @@ void maj_to_min(char *str)
 		else
 			i++;
 	}
+}
+char *add_char(char *str,char c)
+{
+	char *newstr;
+	int i;
+
+	i = 0;
+	newstr = ft_calloc(ft_strlen(str) + 2, sizeof(char));
+	while(str[i])
+	{
+		newstr[i] = str[i];
+		i++;
+	}
+	newstr[i] = c;
+	free(str);
+	return(newstr);
 }

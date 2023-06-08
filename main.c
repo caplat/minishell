@@ -6,7 +6,7 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 15:35:47 by acaplat           #+#    #+#             */
-/*   Updated: 2023/06/06 17:45:38 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/06/08 17:45:22 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	minishell_loop(t_mini *shell)
 			add_history(shell->line);
 			if (count_quotes(shell->line) == 1)
 			{
-				// replace_after_dollar(shell->line,shell);
 				replace_line(shell->line,shell);
 				lst = get_my_list(shell);
 				separate_command(lst,shell);
