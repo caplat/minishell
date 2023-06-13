@@ -2,7 +2,7 @@ CC = gcc
 
 NAME = minishell
 
-MY_SOURCES = utils.c main.c parsing.c exec.c pipe.c linked_list.c dollar.c
+MY_SOURCES = utils.c main.c parsing.c exec.c pipe.c linked_list.c dollar.c lexer.c
 
 MY_OBJECTS = $(MY_SOURCES:.c=.o)
 
@@ -20,7 +20,7 @@ $(NAME): $(MY_OBJECTS)
 
 debug: $(MY_OBJECTS)
 	$(MAKE) -C libft bonus
-	$(CC) $(CFLAGS) $(MY_OBJECTS) $(LIB) $(LIBFT) -fsanitize=address -o $(NAME)
+	$(CC) $(CFLAGS) -fsanitize=address $(MY_OBJECTS) $(LIB) $(LIBFT) -o $(NAME)
 
 RM=rm -f
 

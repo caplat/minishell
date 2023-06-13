@@ -6,7 +6,7 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 15:35:47 by acaplat           #+#    #+#             */
-/*   Updated: 2023/06/08 21:29:48 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/06/13 18:04:17 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int	main(int argc, char **argv, char **env)
 void	minishell_loop(t_mini *shell)
 {
 	t_elem	*lst;
+	t_lex	*simple_command;
+	t_lex	*command;
 
 	while (1)
 	{
@@ -38,16 +40,20 @@ void	minishell_loop(t_mini *shell)
 			add_history(shell->line);
 			if (count_quotes(shell->line) == 1)
 			{
-				replace_line(shell->line,shell);
+				replace_line(shell->line, shell);
 				lst = get_my_list(shell);
-				separate_command(lst,shell);
+				separate_command(lst, shell);
 				shell->newline = convert_to_str(lst);
+				simple_command = get_my_element(shell);
+				command = set_command(simple_command);
+				printlist_bis(command);
+				get_nb_pipe(command,shell);
 			}
 			free(shell->line);
 			free(shell->add_char);
 			free(shell->newline);
 			free_list(lst);
-			shell->add_char = ft_calloc(1,1);
+			shell->add_char = ft_calloc(1, 2);
 		}
 	}
 }

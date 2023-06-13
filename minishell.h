@@ -6,7 +6,7 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 12:08:58 by acaplat           #+#    #+#             */
-/*   Updated: 2023/06/08 22:05:17 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/06/13 18:03:43 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ typedef struct s_mini
 	int				flag;
 	char			**command;
 	int				length_command;
+	char			**simple_command;
+	int				nb_pipe;
 	char			**allpath;
 	char			**tab;
 	char			*exe;
@@ -43,6 +45,13 @@ typedef struct s_elem
 	struct s_elem	*next;
 	struct s_elem	*prev;
 }					t_elem;
+
+typedef struct s_lex
+{
+	char			*str;
+	struct s_lex	*next;
+	struct s_lex	*prev;
+}					t_lex;
 
 typedef struct s_compteur
 {
@@ -96,5 +105,18 @@ char				*compare_line(char *line, int i);
 int					compare_with_env(char *compare, t_mini *shell);
 
 // Pipe
+
+int					create_pipe(t_mini *shell, int nb_pipe);
+void				pipe_is_reading(int pipe_fd[2], int i);
+void				pipe_is_writing(int new_pipe_fd[2], int i, int nb_pipe);
+void				get_nb_pipe(t_lex *head, t_mini *shell);
+
+// Lexer
+
+void				add_element_bis(t_lex **head, char *simple_command);
+t_lex				*get_my_element(t_mini *shell);
+t_lex				*set_command(t_lex *head);
+void				printlist_bis(t_lex *head);
+void				free_list_bis(t_lex *head);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 15:48:36 by acaplat           #+#    #+#             */
-/*   Updated: 2023/06/07 18:38:29 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/06/12 17:04:56 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@ void initialize(char **env,t_mini *shell)
 	shell->env = env;
 	shell->line = NULL;
 	shell->newline = NULL;
-	shell->add_char = ft_calloc(1,1);
+	shell->add_char = ft_calloc(1,2);
 	shell->flag = 0;
 	shell->command = NULL;
 	shell->length_command = 0;
-	shell->tab = NULL;
+	shell->simple_command = NULL;
+	shell->nb_pipe = 0;
 	shell->allpath = NULL;
+	shell->tab = NULL;
 	shell->exe = NULL;
 }
 void maj_to_min(char *str)
