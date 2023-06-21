@@ -141,3 +141,62 @@ int compare_var_env(t_mini *shell,t_elem *lst)
 	}
 	return(0);
 }
+// void do_the_pipe(t_mini *shell)
+// {
+// 	int pipe_fd[2];
+// 	int new_pipe_fd[2];
+// 	int nb_node;
+// 	int i;
+	
+// 	i = -1;
+// 	nb_node = get_nb_node(shell->args);
+// 	pid_t child[nb_node];
+// 	if(pipe(pipe_fd) == -1)
+// 		perror("pipe error\n");
+// 	while(++i < nb_node)
+// 	{
+// 		if(pipe(new_pipe_fd) == -1)
+// 			perror("new_pipe error\n");
+// 		child[i] = fork();
+// 		if((child[i]) == -1)
+// 			perror("error fork\n");
+// 		if(child[i] == 0)
+// 		{
+// 			if (i > 0) 
+// 			{
+// 				close(pipe_fd[0]);
+// 				close(pipe_fd[1]); 
+// 				pipe_fd[0] = new_pipe_fd[0]; 
+// 				pipe_fd[1] = new_pipe_fd[1]; 
+// 			}
+// 			close(pipe_fd[1]);
+// 			close(new_pipe_fd[0]);
+// 			if (i > 0) 
+// 			{
+// 				dup2(pipe_fd[0], STDIN_FILENO); 
+// 				close(pipe_fd[0]); 
+// 			}
+// 			if (i < nb_node - 1) 
+// 			{	
+// 				dup2(new_pipe_fd[1], STDOUT_FILENO); 
+// 				close(new_pipe_fd[1]);
+// 			}
+// 			exec_all(shell,i);
+// 		}
+// 		else
+// 		{
+// 			if(i > 0)
+// 			{
+// 				close(pipe_fd[0]);
+// 				close(pipe_fd[1]);
+// 			}
+// 			pipe_fd[0] = new_pipe_fd[0];
+//         	pipe_fd[1] = new_pipe_fd[1];
+// 		}
+// 		close(new_pipe_fd[0]);
+// 		close(new_pipe_fd[1]);
+// 	}
+// 	i = -1;
+// 	while(++i < nb_node)
+// 		waitpid(child[i],NULL,0);
+// }

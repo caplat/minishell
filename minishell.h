@@ -6,7 +6,7 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 12:08:58 by acaplat           #+#    #+#             */
-/*   Updated: 2023/06/13 18:03:43 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/06/21 17:42:48 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,15 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <termios.h>
 # include <unistd.h>
+
+typedef struct s_lex
+{
+	char			*str;
+	struct s_lex	*next;
+	struct s_lex	*prev;
+}					t_lex;
 
 typedef struct s_mini
 {
@@ -33,9 +41,9 @@ typedef struct s_mini
 	char			**command;
 	int				length_command;
 	char			**simple_command;
-	int				nb_pipe;
+	t_lex			*args;
+	char			**arg_bis;
 	char			**allpath;
-	char			**tab;
 	char			*exe;
 }					t_mini;
 
@@ -45,13 +53,6 @@ typedef struct s_elem
 	struct s_elem	*next;
 	struct s_elem	*prev;
 }					t_elem;
-
-typedef struct s_lex
-{
-	char			*str;
-	struct s_lex	*next;
-	struct s_lex	*prev;
-}					t_lex;
 
 typedef struct s_compteur
 {
@@ -93,9 +94,10 @@ char				*add_char(char *str, char c);
 // Exec
 
 void				get_my_path(t_mini *shell);
-int					verify(t_mini *shell);
+int					verify(t_mini *shell, int j);
 int					execute(t_mini *shell);
-void				exec_all(t_mini *shell);
+void				exec_all(t_mini *shell, int i);
+t_lex				*find_node(int i, t_mini *shell);
 
 //dollar
 
@@ -106,10 +108,8 @@ int					compare_with_env(char *compare, t_mini *shell);
 
 // Pipe
 
-int					create_pipe(t_mini *shell, int nb_pipe);
-void				pipe_is_reading(int pipe_fd[2], int i);
-void				pipe_is_writing(int new_pipe_fd[2], int i, int nb_pipe);
-void				get_nb_pipe(t_lex *head, t_mini *shell);
+int					get_nb_node(t_lex *head);
+void				do_the_pipe(t_mini *shell);
 
 // Lexer
 
@@ -118,5 +118,7 @@ t_lex				*get_my_element(t_mini *shell);
 t_lex				*set_command(t_lex *head);
 void				printlist_bis(t_lex *head);
 void				free_list_bis(t_lex *head);
+
+// Signal
 
 #endif

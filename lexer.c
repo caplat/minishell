@@ -6,7 +6,7 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 15:35:15 by acaplat           #+#    #+#             */
-/*   Updated: 2023/06/13 17:54:29 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/06/19 11:59:15 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,13 @@ t_lex	*set_command(t_lex *head)
 		test = ft_strjoin(test, " ");
 		if (current->next && ft_strncmp(current->next->str, "|", 2) == 0)
 		{
-			add_element_bis(&newlist, test);
+			add_element_bis(&newlist, ft_strdup(test));
 			current = current->next;
 			test = ft_calloc(1, 1);
 		}
 		current = current->next;
 	}
-	add_element_bis(&newlist, test);
+	add_element_bis(&newlist, ft_strdup(test));
 	free(test);
 	return (newlist);
 }

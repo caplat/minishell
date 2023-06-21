@@ -2,7 +2,7 @@ CC = gcc
 
 NAME = minishell
 
-MY_SOURCES = utils.c main.c parsing.c exec.c pipe.c linked_list.c dollar.c lexer.c
+MY_SOURCES = utils.c main.c parsing.c exec.c pipe.c linked_list.c dollar.c lexer.c signal.c \
 
 MY_OBJECTS = $(MY_SOURCES:.c=.o)
 
@@ -10,17 +10,20 @@ CFLAGS = -Wall -Wextra -Werror
 
 LIBFT = libft/libft.a
 
-LIB = -lreadline -L/Users/$$USER/.brew/opt/readline/include
+LIB = -lreadline 
 
 all: $(NAME)
 
+.c.o:
+	$(CC) $(CFLAGS) -I.brew/opt/readline/include -c $< -o $(<:.c=.o)
+
 $(NAME): $(MY_OBJECTS)
 	$(MAKE) -C libft bonus
-	$(CC) $(CFLAGS) $(MY_OBJECTS) $(LIB) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(MY_OBJECTS) -L ~/.brew/opt/readline/lib  $(LIB) $(LIBFT) -o $(NAME)
 
 debug: $(MY_OBJECTS)
 	$(MAKE) -C libft bonus
-	$(CC) $(CFLAGS) -fsanitize=address $(MY_OBJECTS) $(LIB) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(MY_OBJECTS) -L ~/.brew/opt/readline/lib -fsanitize=address $(LIB) $(LIBFT) -o $(NAME)
 
 RM=rm -f
 

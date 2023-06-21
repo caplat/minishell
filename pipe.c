@@ -6,13 +6,13 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 14:01:07 by acaplat           #+#    #+#             */
-/*   Updated: 2023/06/13 18:05:18 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/06/21 18:18:59 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void get_nb_pipe(t_lex *head,t_mini *shell)
+int get_nb_node(t_lex *head)
 {
 	t_lex *current;
 	int i;
@@ -24,60 +24,71 @@ void get_nb_pipe(t_lex *head,t_mini *shell)
 		current = current->next;
 		i++;
 	}
-	shell->nb_pipe = i - 1;
+	return(i);
 }
-
-int create_pipe(t_mini *shell, int nb_pipe)
+void do_the_pipe(t_mini *shell)
 {
-	(void)shell;
-	int pipe_fd[2];
-	int new_pipe_fd[2];
-	int pid;
+    int nb_node = get_nb_node(shell->args);
+
+    int pipe_fd[2];
+    int prev_pipe_read = 0;
+	pid_t child_pid;
 	int i;
 
 	i = -1;
-	while(++i < nb_pipe)
+    while(++i < nb_node) 
 	{
-		if(pipe(new_pipe_fd) == -1)
-			return(1); //erreur creation pipe
-		pid = fork();
-		if(pid == -1)
-			return(2); //erreur processus fils
-		if(pid == 0)
+        if (pipe(pipe_fd) == -1) 
 		{
-			pipe_is_reading(pipe_fd,i);
-			pipe_is_writing(new_pipe_fd,i,nb_pipe);
-			//execute la commande approprie pour chaque processus enfant
-		}
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
-		pipe_fd[0] = new_pipe_fd[0];
-		pipe_fd[1] = new_pipe_fd[1]; 
-	}
-	close(pipe_fd[0]);
-	close(pipe_fd[1]);
+            perror("pipe error\n");
+            return;
+        }
 
+        child_pid = fork();
+        if (child_pid == -1) 
+		{
+            perror("fork error\n");
+            return;
+        }
+
+        if (child_pid == 0) 
+		{
+            // Child process
+            close(pipe_fd[0]);  // Close unused read end
+
+            if (i > 0) 
+			{
+                // Connect input to previous pipe read end
+                dup2(prev_pipe_read, STDIN_FILENO);
+                close(prev_pipe_read);
+            }
+
+            if (i < nb_node - 1) 
+			{
+                // Connect output to current pipe write end
+                dup2(pipe_fd[1], STDOUT_FILENO);
+            }
+
+            // Execute the command
+            exec_all(shell, i);
+            exit(0);  // Exit the child process
+        } 
+		else 
+		{
+            // Parent process
+            close(pipe_fd[1]);  // Close unused write end
+            if (i > 0) 
+			{
+                close(prev_pipe_read);  // Close previous pipe read end
+            }
+            prev_pipe_read = pipe_fd[0];  // Store the current pipe read end
+        }
+    }
+    // Close the final pipe read end in the parent
+    close(prev_pipe_read);
+
+    // Wait for all child processes to finish
 	i = -1;
-	while(++i < nb_pipe)
-		wait(NULL);
-	return(0);
+    while(++i < nb_node)
+        wait(NULL);
 }
-
-void pipe_is_reading(int pipe_fd[2],int i)
-{
-	close(pipe_fd[1]);
-	if(i > 0)
-	{
-		dup2(pipe_fd[0],STDIN_FILENO);
-		close(pipe_fd[0]);
-
-	}
-}
-void pipe_is_writing(int new_pipe_fd[2],int i,int nb_pipe)
-{
-	close(new_pipe_fd[0]);
-	if(i < nb_pipe - 1)
-		dup2(new_pipe_fd[1],STDOUT_FILENO);
-	close(new_pipe_fd[1]);
-}
-

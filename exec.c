@@ -6,7 +6,7 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 13:45:00 by acaplat           #+#    #+#             */
-/*   Updated: 2023/05/24 14:33:48 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/06/21 16:13:19 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	get_my_path(t_mini *shell)
 {
 	int i;
-	(void)shell;
 
 	i = 0;
 	while(shell->env[i])
@@ -24,50 +23,62 @@ void	get_my_path(t_mini *shell)
 		{
 			shell->allpath = ft_split(ft_substr(shell->env[i], 5,
 				ft_strlen(shell->env[i]) - 5), ':');
-			i++;
+			break;
 		}
 		else
 			i++;
 	}
 }
-int verify(t_mini *shell)
+int verify(t_mini *shell,int j)
 {
 	int i;
+	t_lex *current;
 	char *path_part;
 
 	i = 0;
-	maj_to_min(shell->tab[0]);
+	current = find_node(j,shell);
+	maj_to_min(current->str);
+	shell->arg_bis = ft_split(current->str,' ');
+	// printf("%d\n",j);
 	while(shell->allpath[i++])
 	{
 		path_part = ft_strjoin(shell->allpath[i],"/");
-		shell->exe = ft_strjoin(path_part,shell->tab[0]);
+		shell->exe = ft_strjoin(path_part,shell->arg_bis[0]);
+		// printf("--%s\n",current->str);
+		// printf("%s\n",shell->exe);
 		free(path_part);
 		if(access(shell->exe,F_OK | X_OK) == 0)
 			return(1);
+		free(shell->exe);
 	}
 	exit(printf("problem with verify\n"));
 }
 int execute(t_mini *shell)
 {
-	int child;
-
-	{
-		child = fork();
-		if(child < 0)
-			return(printf("problem with fork\n"));
-		if(child == 0)
-		{
-			if(execve(shell->exe,shell->tab,shell->env) == -1)
-				exit(printf("problem with execve\n"));
-		}
-		else
-			waitpid(child, NULL, 0);
-	}
+	// printf("error\n");
+	if(execve(shell->exe,shell->arg_bis,shell->env) == -1)
+		exit(printf("problem with execve\n"));
 	return(0);
 }
-void exec_all(t_mini *shell)
+
+t_lex *find_node(int i,t_mini *shell)
+{
+	int j;
+	t_lex *current;
+
+	current = shell->args;
+	j = 0;
+	while(j < i)
+	{
+		current = current->next;
+		j++;
+	}
+	return(current);
+}
+
+void exec_all(t_mini *shell,int i)
 {
 	get_my_path(shell);
-	verify(shell);
+	verify(shell,i);
 	execute(shell);
 }
