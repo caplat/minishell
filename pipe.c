@@ -6,7 +6,7 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 14:01:07 by acaplat           #+#    #+#             */
-/*   Updated: 2023/06/21 18:18:59 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/06/21 18:23:37 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ int get_nb_node(t_lex *head)
 }
 void do_the_pipe(t_mini *shell)
 {
-    int nb_node = get_nb_node(shell->args);
-
+    int nb_node;
     int pipe_fd[2];
     int prev_pipe_read = 0;
 	pid_t child_pid;
 	int i;
 
+	nb_node = get_nb_node(shell->args);
 	i = -1;
     while(++i < nb_node) 
 	{

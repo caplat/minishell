@@ -6,7 +6,7 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 12:08:58 by acaplat           #+#    #+#             */
-/*   Updated: 2023/06/21 17:42:48 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/06/22 18:59:25 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,5 +120,14 @@ void				printlist_bis(t_lex *head);
 void				free_list_bis(t_lex *head);
 
 // Signal
+
+// Builtins
+
+// int					echo_bis(char **simple_command);
+// size_t				check_n(char **simple_command);
+// void				exec_builtin(t_mini *shell);
+void				check_built_in(t_lex *current);
+void				echo(char **compare);
+int					check_n(char **compare);
 
 #endif

@@ -3,6 +3,7 @@ CC = gcc
 NAME = minishell
 
 MY_SOURCES = utils.c main.c parsing.c exec.c pipe.c linked_list.c dollar.c lexer.c signal.c \
+			builtins/echo.c builtins/exec_builtins.c
 
 MY_OBJECTS = $(MY_SOURCES:.c=.o)
 
