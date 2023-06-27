@@ -6,7 +6,7 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 15:35:15 by acaplat           #+#    #+#             */
-/*   Updated: 2023/06/22 18:01:59 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/06/26 16:24:21 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,15 @@ t_lex	*set_command(t_lex *head)
 			current = current->next;
 			test = ft_calloc(1, 1);
 		}
+		// suppr_chevron(current);
 		current = current->next;
 	}
 	add_element_bis(&newlist, ft_strdup(test));
 	free(test);
 	return (newlist);
+}
+void suppr_chevron(t_lex *current)
+{
+	if(current->next && ft_strncmp(current->str,">",2) == 0)
+		current = current->next->next;
 }

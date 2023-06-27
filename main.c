@@ -6,7 +6,7 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 15:35:47 by acaplat           #+#    #+#             */
-/*   Updated: 2023/06/22 18:57:51 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/06/27 17:36:34 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,15 @@ int	main(int argc, char **argv, char **env)
 	}
 	shell = malloc(sizeof(t_mini));
 	initialize(env, shell);
+	rl_catch_signals = 0;
+	do_signal();
 	minishell_loop(shell);
 }
 void	minishell_loop(t_mini *shell)
 {
 	t_elem	*lst;
 	t_lex	*simple_command;
+	t_lex	*newlist;
 
 	while (1)
 	{
@@ -44,9 +47,12 @@ void	minishell_loop(t_mini *shell)
 				separate_command(lst, shell);
 				shell->newline = convert_to_str(lst);
 				simple_command = get_my_element(shell);
-				shell->args = set_command(simple_command);
+				newlist = curate_list(simple_command);
+				shell->args = set_command(newlist);
 				printlist_bis(shell->args);
 				do_the_pipe(shell);
+				printf("ERROR\n");
+
 			}
 			free(shell->line);
 			free(shell->add_char);
@@ -54,5 +60,7 @@ void	minishell_loop(t_mini *shell)
 			free_list(lst);
 			shell->add_char = ft_calloc(1, 2);
 		}
+		else
+			exit(0);
 	}
 }

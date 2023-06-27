@@ -6,7 +6,7 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 14:25:57 by acaplat           #+#    #+#             */
-/*   Updated: 2023/06/22 17:49:43 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/06/26 15:57:26 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ char *convert_to_str(t_elem *head)
         current = current->next;
         i++;
     }
-    printf("%s\n",str);
+    printf("str-->%s\n",str);
     return(str);
 }
 void free_list(t_elem *head)

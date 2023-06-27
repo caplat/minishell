@@ -6,7 +6,7 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 15:48:36 by acaplat           #+#    #+#             */
-/*   Updated: 2023/06/21 17:43:16 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/06/27 17:01:36 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void initialize(char **env,t_mini *shell)
 	shell->arg_bis = NULL;
 	shell->allpath = NULL;
 	shell->exe = NULL;
+	shell->stdout_cpy = dup(STDOUT_FILENO);
 }
 void maj_to_min(char *str)
 {
@@ -57,4 +58,13 @@ char *add_char(char *str,char c)
 	newstr[i] = c;
 	free(str);
 	return(newstr);
+}
+int find_length(char **str)
+{
+	int i;
+
+	i = 0;
+	while(str[i])
+		i++;
+	return(i);
 }

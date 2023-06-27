@@ -6,7 +6,7 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 14:01:07 by acaplat           #+#    #+#             */
-/*   Updated: 2023/06/21 18:23:37 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/06/27 17:06:16 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,32 +43,27 @@ void do_the_pipe(t_mini *shell)
             perror("pipe error\n");
             return;
         }
-
         child_pid = fork();
         if (child_pid == -1) 
 		{
             perror("fork error\n");
             return;
         }
-
         if (child_pid == 0) 
 		{
             // Child process
             close(pipe_fd[0]);  // Close unused read end
-
             if (i > 0) 
 			{
                 // Connect input to previous pipe read end
                 dup2(prev_pipe_read, STDIN_FILENO);
                 close(prev_pipe_read);
             }
-
             if (i < nb_node - 1) 
 			{
                 // Connect output to current pipe write end
                 dup2(pipe_fd[1], STDOUT_FILENO);
             }
-
             // Execute the command
             exec_all(shell, i);
             exit(0);  // Exit the child process
@@ -83,10 +78,11 @@ void do_the_pipe(t_mini *shell)
             }
             prev_pipe_read = pipe_fd[0];  // Store the current pipe read end
         }
+        dup2(shell->stdout_cpy,STDOUT_FILENO);
+        close(shell->stdout_cpy);
     }
     // Close the final pipe read end in the parent
     close(prev_pipe_read);
-
     // Wait for all child processes to finish
 	i = -1;
     while(++i < nb_node)

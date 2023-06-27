@@ -6,7 +6,7 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 12:08:58 by acaplat           #+#    #+#             */
-/*   Updated: 2023/06/22 18:59:25 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/06/27 17:07:06 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 
 # include "libft/libft.h"
 # include <fcntl.h>
-# include <readline/history.h>
-# include <readline/readline.h>
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <termios.h>
 # include <unistd.h>
+# include <readline/history.h>
+# include <readline/readline.h>
 
 typedef struct s_lex
 {
@@ -45,6 +45,7 @@ typedef struct s_mini
 	char			**arg_bis;
 	char			**allpath;
 	char			*exe;
+	int				stdout_cpy;
 }					t_mini;
 
 typedef struct s_elem
@@ -90,6 +91,7 @@ void				separate_command(t_elem *lst, t_mini *shell);
 void				initialize(char **env, t_mini *shell);
 void				maj_to_min(char *str);
 char				*add_char(char *str, char c);
+int					find_length(char **str);
 
 // Exec
 
@@ -118,16 +120,28 @@ t_lex				*get_my_element(t_mini *shell);
 t_lex				*set_command(t_lex *head);
 void				printlist_bis(t_lex *head);
 void				free_list_bis(t_lex *head);
+void				suppr_chevron(t_lex *current);
 
 // Signal
 
+void				handle_SIGINT(int signal);
+void				handle_SIGQUIT(int signal);
+void				do_signal(void);
+
 // Builtins
 
-// int					echo_bis(char **simple_command);
-// size_t				check_n(char **simple_command);
-// void				exec_builtin(t_mini *shell);
 void				check_built_in(t_lex *current);
+void				redir_output(char *filename);
+
+//Echo
+
 void				echo(char **compare);
 int					check_n(char **compare);
+
+//Redirection
+
+void				redir_output(char *filename);
+void				redir_input(char *filename);
+t_lex				*curate_list(t_lex *simple_command);
 
 #endif

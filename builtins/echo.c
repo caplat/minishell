@@ -12,81 +12,51 @@
 
 #include "../minishell.h"
 
-// void echo(char **simple_command)
-// {
-//     int flag;
-//     int i;
+void echo(char **compare)
+{
+    int i;
+	int j;
+    int flag;
+  
+	if(!compare[1])
+        printf("\n");
+	j = find_length(compare);
+    i = check_n(compare);
+    flag = i;
+	// printf("j--->%d\n",j);
+    // printf("check_n--->%d\n",i);
+    // printf("compare-->%s\n",compare[i]);
+    while(compare[i])
+    {
+        if(i >= 1)
+        {
+            ft_putstr_fd(compare[i],1);
+			if(i < j - 1)
+            	ft_putchar_fd(' ',1);
+            i++;
+        }
+    }
+    if(flag == 1)
+        ft_putchar_fd('\n',1);
+}
+int check_n(char **compare)
+{
+    int i;
+    int j;
 
-//     i = 1;
-//     flag = 0;
-//     if(simple_command[1] && ft_strncmp(simple_command[1], "-n", 3) == 0)
-//     {
-//         flag = 1;
-//         i = 2;
-//     }
-//     while (simple_command[i])
-//     {
-//         printf("%s ", simple_command[i]);
-//         i++;
-//     }
-//     if(flag == 0)
-//         printf("\n");
-// }
-
-// size_t check_n(char **simple_command)
-// {
-//     size_t i;
-//     size_t j;
-
-//     i = 0;
-// 	while(simple_command[i++])
-//     {
-//         j = 0;
-//         if(simple_command[i][j++] == '-' && simple_command[i][j] == 'n')
-//         {
-//             while(simple_command[i][j] == 'n')
-//                 j++;
-//             if(simple_command[i][j] != 'n')
-//                 return 1;
-//         }
-//         else
-//             return i;
-//     }
-//     return i;
-// }
-
-
-// int echo_bis(char **simple_command)
-// {
-//     size_t i;
-//     int n;
-
-//     n = 1;
-	
-    
-// 	printf("simple-command:%s\n",simple_command[1]);
-//     if(!simple_command[1])
-// 	{
-// 		printf("\n");
-// 		return(1);
-// 	}
-//     if((strcmp(simple_command[1], " ") && !simple_command[2]))
-//     {
-// 		printf("allo\n");
-//         printf("\n");
-// 		return(1);
-//     }
-//     i = check_n(simple_command);
-//     n = i > 1 ? 0 : 1;
-//     printf("i: %zu\n", i);
-//     while(simple_command[i])
-//     {
-//         printf("--->hhhh:%s\n", simple_command[i]);
-//         i++;
-//         if(simple_command[i])
-//             printf(" ");
-//     }
-//     if(n)
-//         printf("\n");
-//     return 1;
-// }
+    i = 0;
+    while(compare[++i])
+    {
+        j = 0;
+        if(compare[i][j++] == '-' && compare[i][j] && compare[i][j] == 'n')
+        {
+            while(compare[i][j] == 'n')
+                j++;
+            if(compare[i][j] && compare[i][j] != 'n')
+                return(1);
+        }
+        else
+            return i;
+    }
+    return(i);
+}
