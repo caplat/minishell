@@ -6,7 +6,7 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 12:08:58 by acaplat           #+#    #+#             */
-/*   Updated: 2023/06/27 17:07:06 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/06/28 12:37:51 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ typedef struct s_mini
 	char			**allpath;
 	char			*exe;
 	int				stdout_cpy;
+	int				stdin_cpy;
+	int				flag_redir_out;
+	int				flag_redir_in;
 }					t_mini;
 
 typedef struct s_elem
@@ -131,7 +134,6 @@ void				do_signal(void);
 // Builtins
 
 void				check_built_in(t_lex *current);
-void				redir_output(char *filename);
 
 //Echo
 
@@ -140,8 +142,8 @@ int					check_n(char **compare);
 
 //Redirection
 
-void				redir_output(char *filename);
-void				redir_input(char *filename);
-t_lex				*curate_list(t_lex *simple_command);
+void				redir_output(char *filename,t_mini *shell);
+void				redir_input(char *filename,t_mini *shell);
+t_lex				*curate_list(t_lex *simple_command,t_mini *shell);
 
 #endif

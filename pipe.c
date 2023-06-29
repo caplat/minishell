@@ -6,7 +6,7 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 14:01:07 by acaplat           #+#    #+#             */
-/*   Updated: 2023/06/27 17:06:16 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/06/29 18:47:41 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,19 @@ void do_the_pipe(t_mini *shell)
             }
             prev_pipe_read = pipe_fd[0];  // Store the current pipe read end
         }
-        dup2(shell->stdout_cpy,STDOUT_FILENO);
-        close(shell->stdout_cpy);
     }
+    // if(shell->flag_redir_out == 1)
+    // {
+    //      printf("allo out\n");
+    //      dup2(shell->stdout_cpy,STDOUT_FILENO);
+    //      close(shell->stdout_cpy);
+    // }
+    // if(shell->flag_redir_in == 1)
+    // {
+    //     printf("allo in\n");
+    //     dup2(shell->stdin_cpy,STDIN_FILENO);
+    //     close(shell->stdin_cpy);
+    // }
     // Close the final pipe read end in the parent
     close(prev_pipe_read);
     // Wait for all child processes to finish

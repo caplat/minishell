@@ -200,3 +200,96 @@ int compare_var_env(t_mini *shell,t_elem *lst)
 // 	while(++i < nb_node)
 // 		waitpid(child[i],NULL,0);
 // }
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Structure pour le maillon de la liste doublement chaînée
+typedef struct Node {
+    struct LinkedList* sublist; // Pointeur vers une autre liste doublement chaînée
+    struct Node* next;
+    struct Node* prev;
+} Node;
+
+// Structure pour la liste doublement chaînée
+typedef struct LinkedList {
+    Node* head;
+    Node* tail;
+} LinkedList;
+
+// Fonction pour insérer une liste doublement chaînée interne dans un maillon de la liste doublement chaînée externe
+void insertSublist(LinkedList* list, LinkedList* sublist) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->sublist = sublist;
+    newNode->next = NULL;
+    newNode->prev = NULL;
+
+    if (list->head == NULL) {
+        list->head = newNode;
+        list->tail = newNode;
+    } else {
+        newNode->prev = list->tail;
+        list->tail->next = newNode;
+        list->tail = newNode;
+    }
+}
+
+// Fonction pour afficher la liste doublement chaînée
+void printLinkedList(LinkedList* list) {
+    Node* current = list->head;
+    while (current != NULL) {
+        printf("(Sublist: ");
+        printLinkedList(current->sublist);
+        printf(") ");
+        current = current->next;
+    }
+}
+
+// Fonction pour libérer la mémoire allouée par la liste doublement chaînée
+void freeLinkedList(LinkedList* list) {
+    Node* current = list->head;
+    while (current != NULL) {
+        Node* next = current->next;
+        freeLinkedList(current->sublist); // Récursivement libérer la mémoire de la sous-liste
+        free(current);
+        current = next;
+    }
+    free(list);
+}
+
+int main() {
+    // Création de la liste doublement chaînée externe
+    LinkedList* list = (LinkedList*)malloc(sizeof(LinkedList));
+    list->head = NULL;
+    list->tail = NULL;
+
+    // Création de la première liste doublement chaînée interne
+    LinkedList* sublist1 = (LinkedList*)malloc(sizeof(LinkedList));
+    sublist1->head = NULL;
+    sublist1->tail = NULL;
+
+    // Ajout des éléments à la première liste doublement chaînée interne
+    // ...
+
+    // Création de la deuxième liste doublement chaînée interne
+    LinkedList* sublist2 = (LinkedList*)malloc(sizeof(LinkedList));
+    sublist2->head = NULL;
+    sublist2->tail = NULL;
+
+    // Ajout des éléments à la deuxième liste doublement chaînée interne
+    // ...
+
+    // Insérer les listes doublement chaînées internes dans le maillon de la liste doublement chaînée externe
+    insertSublist(list, sublist1);
+    insertSublist(list, sublist2);
+
+    // Afficher la liste doublement chaînée
+    printLinkedList(list);
+
+    // Libérer la mémoire allouée
+    freeLinkedList(list);
+
+    return 0;
+}
+
+   

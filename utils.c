@@ -6,7 +6,7 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 15:48:36 by acaplat           #+#    #+#             */
-/*   Updated: 2023/06/27 17:01:36 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/06/28 12:28:34 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ void initialize(char **env,t_mini *shell)
 	shell->allpath = NULL;
 	shell->exe = NULL;
 	shell->stdout_cpy = dup(STDOUT_FILENO);
+	shell->stdin_cpy = dup(STDIN_FILENO);
+	shell->flag_redir_in = 0;
+	shell->flag_redir_out = 0;
 }
 void maj_to_min(char *str)
 {
