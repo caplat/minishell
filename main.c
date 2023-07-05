@@ -6,7 +6,7 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 15:35:47 by acaplat           #+#    #+#             */
-/*   Updated: 2023/06/29 18:47:54 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/07/05 13:47:26 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,19 +53,19 @@ void	minishell_loop(t_mini *shell)
 					shell->args = set_command(newlist);
 					printlist_bis(shell->args);
 					do_the_pipe(shell);
-					printf("ERROR\n");
-					if(STDIN_FILENO != shell->stdin_cpy)
-					{
-            			printf("allo out\n");
-						dup2(shell->stdout_cpy,STDOUT_FILENO);
-           				close(shell->stdout_cpy);
-        			}
-					if(STDOUT_FILENO != shell->stdout_cpy)
-					{
-						printf("allo in\n");
-						dup2(shell->stdin_cpy,STDIN_FILENO);
-						close(shell->stdin_cpy);
-					}
+					// printf("ERROR\n");
+					// if(STDIN_FILENO != shell->stdin_cpy)
+					// {
+            		// 	printf("allo out\n");
+					// 	dup2(shell->stdout_cpy,STDOUT_FILENO);
+           			// 	close(shell->stdout_cpy);
+        			// }
+					// if(STDOUT_FILENO != shell->stdout_cpy)
+					// {
+					// 	printf("allo in\n");
+					// 	dup2(shell->stdin_cpy,STDIN_FILENO);
+					// 	close(shell->stdin_cpy);
+					// }
 				}
 				free(shell->line);
 				free(shell->add_char);

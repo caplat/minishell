@@ -6,7 +6,7 @@
 /*   By: acaplat <acaplat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 12:08:58 by acaplat           #+#    #+#             */
-/*   Updated: 2023/06/28 12:37:51 by acaplat          ###   ########.fr       */
+/*   Updated: 2023/07/05 14:38:45 by acaplat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ void				check_built_in(t_lex *current);
 
 void				echo(char **compare);
 int					check_n(char **compare);
+int	cote(char c,int flag);
 
 //Redirection
 
